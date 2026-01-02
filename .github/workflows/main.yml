@@ -1,43 +1,33 @@
-name: CI
+name: Build Realme 5 Pro NetHunter Kernel
 on:
-  push:
-    branches: main
-    paths:
-      - '.github/workflows/main.yml'
-      - 'action.yml'
-
-  pull_request:
   workflow_dispatch:
 
 jobs:
-  ci-test:
-    name: Build Kernel
-    strategy:
-      fail-fast: false
+  build:
+    name: Build Kernel for rmx1971
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
     steps:
-    - name: Checkout
-      uses: actions/checkout@v6
-      with:
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-          ref: ${{ github.event.pull_request.head.ref }}
-
-    - name: Build Kernel
-      uses: ./
-      with:
-          kernel-url: https://github.com/AcmeUI-Devices/android_kernel_xiaomi_cas
-          kernel-dir: msm-4.19
-          kernel-branch: taffy
-          config: cas_defconfig
+      - name: Build Kernel
+        uses: dabao1955/kernel_build_action@main
+        with:
+          # Your specific edited kernel source
+          kernel-url: https://github.com/mtchary1963-code/RMX1971_kernel_built.git
+          kernel-branch: twelve
+          config: KharaMe_defconfig
+          
+          # Architecture & OS
           arch: arm64
+          android-version: 12
+          
+          # Compilers (Pixel Experience 12 requires Clang)
           aosp-gcc: true
           aosp-clang: true
+          
+          # NetHunter specific flags (Crucial for HID/WiFi)
+          nethunter: true
+          nethunter-patch: true
+          
+          # Root & Packaging
           ksu: true
-          ksu-version: main
-          android-version: 12
-          aosp-clang-version: r383902
-          disable-lto: true
           anykernel3: true
+          
