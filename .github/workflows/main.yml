@@ -25,7 +25,7 @@ jobs:
           
           # NetHunter specific flags (Crucial for HID/WiFi)
           nethunter: true
-          nethunter-patch: true
+          nethunter-patch: false
           
           # Root & Packaging
           ksu: true
